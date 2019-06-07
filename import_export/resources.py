@@ -10,7 +10,7 @@ from diff_match_patch import diff_match_patch
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured, ValidationError
 from django.core.management.color import no_style
-from django.db import DEFAULT_DB_ALIAS, connections
+from django.db import DEFAULT_DB_ALIAS, connections, router
 from django.db.models.fields import FieldDoesNotExist
 from django.db.models.fields.related import ForeignObjectRel
 from django.db.models.query import QuerySet
@@ -249,6 +249,12 @@ class Resource(metaclass=DeclarativeMetaclass):
 
     def init_instance(self, row=None):
         raise NotImplementedError()
+        
+    def get_connection_name(self):
+        """
+        Returns the right connection for writes so we can perform transactions on it properly. 
+        """
+        return router.db_for_write(self._meta.model)
 
     def get_instance(self, instance_loader, row):
         """
