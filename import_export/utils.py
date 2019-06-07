@@ -11,10 +11,10 @@ class atomic_if_using_transaction:
                 return somethng()
         return something()
     """
-    def __init__(self, using_transactions, connection_name=None):
+    def __init__(self, using_transactions, using=None):
         self.using_transactions = using_transactions
         if using_transactions:
-            self.context_manager = transaction.atomic(using=connection_name)
+            self.context_manager = transaction.atomic(using=using)
 
     def __enter__(self):
         if self.using_transactions:
