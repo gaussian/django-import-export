@@ -585,7 +585,7 @@ class Resource(metaclass=DeclarativeMetaclass):
         if using_transactions:
             # when transactions are used we want to create/update/delete object
             # as transaction will be rolled back if dry_run is set
-            sp1 = savepoint()
+            sp1 = savepoint(using=self.get_connection_name())
 
         try:
             with atomic_if_using_transaction(using_transactions):
@@ -643,9 +643,9 @@ class Resource(metaclass=DeclarativeMetaclass):
 
         if using_transactions:
             if dry_run or result.has_errors():
-                savepoint_rollback(sp1)
+                savepoint_rollback(sp1, using=self.get_connection_name())
             else:
-                savepoint_commit(sp1)
+                savepoint_commit(sp1, using=self.get_connection_name())
 
         return result
 
