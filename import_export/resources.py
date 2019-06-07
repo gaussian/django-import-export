@@ -574,7 +574,7 @@ class Resource(metaclass=DeclarativeMetaclass):
 
         using_transactions = (use_transactions or dry_run) and supports_transactions
 
-        with atomic_if_using_transaction(using_transactions):
+        with atomic_if_using_transaction(using_transactions, using=self.get_connection_name()):
             return self.import_data_inner(dataset, dry_run, raise_errors, using_transactions, collect_failed_rows, **kwargs)
 
     def import_data_inner(self, dataset, dry_run, raise_errors, using_transactions, collect_failed_rows, **kwargs):
@@ -588,7 +588,7 @@ class Resource(metaclass=DeclarativeMetaclass):
             sp1 = savepoint(using=self.get_connection_name())
 
         try:
-            with atomic_if_using_transaction(using_transactions):
+            with atomic_if_using_transaction(using_transactions, using=self.get_connection_name()):
                 self.before_import(dataset, using_transactions, dry_run, **kwargs)
         except Exception as e:
             logger.debug(e, exc_info=e)
@@ -606,7 +606,7 @@ class Resource(metaclass=DeclarativeMetaclass):
             result.add_dataset_headers(dataset.headers)
 
         for i, row in enumerate(dataset.dict, 1):
-            with atomic_if_using_transaction(using_transactions):
+            with atomic_if_using_transaction(using_transactions, using=self.get_connection_name()):
                 row_result = self.import_row(
                     row,
                     instance_loader,
@@ -632,7 +632,7 @@ class Resource(metaclass=DeclarativeMetaclass):
                 result.append_row_result(row_result)
 
         try:
-            with atomic_if_using_transaction(using_transactions):
+            with atomic_if_using_transaction(using_transactions, using=self.get_connection_name()):
                 self.after_import(dataset, result, using_transactions, dry_run, **kwargs)
         except Exception as e:
             logger.debug(e, exc_info=e)
