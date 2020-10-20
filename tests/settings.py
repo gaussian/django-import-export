@@ -42,6 +42,7 @@ TEMPLATES = [
             'context_processors': (
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
             ),
         },
     },
@@ -100,3 +101,7 @@ LOGGING = {
     'root': {
         'handlers': ['console'],
     }}
+
+
+# USE_TZ = True
+# TIME_ZONE = 'Europe/Ljubljana'

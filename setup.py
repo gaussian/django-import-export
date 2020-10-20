@@ -8,6 +8,9 @@ CLASSIFIERS = [
     'Framework :: Django',
     'Framework :: Django :: 2.0',
     'Framework :: Django :: 2.1',
+    'Framework :: Django :: 2.2',
+    'Framework :: Django :: 3.0',
+    'Framework :: Django :: 3.1',
     'Intended Audience :: Developers',
     'License :: OSI Approved :: BSD License',
     'Operating System :: OS Independent',
@@ -23,7 +26,7 @@ CLASSIFIERS = [
 install_requires = [
     'diff-match-patch',
     'Django>=2.0',
-    'tablib',
+    'tablib[html,ods,xls,xlsx,yaml]>=0.14.0',
 ]
 
 
@@ -34,7 +37,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as f:
 setup(
     name="django-import-export",
     description="Django application and library for importing and exporting"
-                "data with included admin integration.",
+                " data with included admin integration.",
     long_description=readme,
     version=VERSION,
     author="Informatika Mihelac",
@@ -42,6 +45,10 @@ setup(
     license='BSD License',
     platforms=['OS Independent'],
     url="https://github.com/django-import-export/django-import-export",
+    project_urls={
+        "Documentation": "https://django-import-export.readthedocs.io/en/stable/",
+        "Changelog": "https://django-import-export.readthedocs.io/en/stable/changelog.html",
+    },
     packages=find_packages(exclude=["tests"]),
     include_package_data=True,
     install_requires=install_requires,
